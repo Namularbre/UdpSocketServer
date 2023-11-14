@@ -1,5 +1,5 @@
-use std::net::UdpSocket;
 use std::io::stdin;
+use std::net::UdpSocket;
 
 fn main() {
     let server_address: String = get_server_address();
@@ -21,6 +21,7 @@ fn listen(server_address: &str) {
         let socket: UdpSocket = UdpSocket::bind(server_address).expect("Error while binding the socket.");
         let (num_bytes, src_addr) = socket.recv_from(&mut buf).expect("Error while receiving message");
         message.push_str(std::str::from_utf8(&buf[..num_bytes]).expect("Invalid UTF-8 data"));
+
         println!("{}:{}", src_addr.to_string(), message);
 
         if message.trim() == "!STOP" {
