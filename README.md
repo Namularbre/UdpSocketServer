@@ -17,6 +17,10 @@ Use this command, it will compile the source code to an executable
 cargo run
 ````
 
+## Installation
+
+Go to release and download the .exe file, then run it. A version for linux will be available soon.
+
 ## Authors
 
 @Namularbre
