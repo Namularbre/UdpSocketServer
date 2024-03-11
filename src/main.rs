@@ -15,17 +15,14 @@ fn get_server_address() -> String {
 
 fn listen(server_address: &str) {
     println!("listening on {}", server_address);
+    let socket: UdpSocket = UdpSocket::bind(server_address).expect("Error while binding the socket.");
+
     loop {
         let mut message: String = String::new();
         let mut buf: [u8; 1024] = [0; 1024];
-        let socket: UdpSocket = UdpSocket::bind(server_address).expect("Error while binding the socket.");
         let (num_bytes, src_addr) = socket.recv_from(&mut buf).expect("Error while receiving message");
         message.push_str(std::str::from_utf8(&buf[..num_bytes]).expect("Invalid UTF-8 data"));
 
         println!("{}:{}", src_addr.to_string(), message);
-
-        if message.trim() == "!STOP" {
-            return;
-        }
     }
 }
