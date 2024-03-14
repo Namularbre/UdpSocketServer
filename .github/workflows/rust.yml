@@ -15,6 +15,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --release --verbose
+      - uses: actions/checkout@v3
+      - name: Set up Rust
+        uses: actions/setup-rust@v2
+        with:
+          toolchain: stable
+      - name: Build
+        run: cargo build --release --verbose
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            ./target/release/your_executable_file # Change 'your_executable_file' to the name of your executable file
+          tag_name: v2.0.0
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this release:
+            - Describe your changes here
+        if: success()
