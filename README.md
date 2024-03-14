@@ -48,4 +48,4 @@ it is sent to "from" address.
 
 ## Authors
 
-@Namularbre
+[Namularbre](https://github.com/Namularbre/)
