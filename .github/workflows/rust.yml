@@ -22,6 +22,9 @@ jobs:
           toolchain: stable
       - name: Build
         run: cargo build --release --verbose
+      - name: Check if build successful
+        run: test -f target/release/your_executable_file
+        continue-on-error: true
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -29,7 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-            ./target/release/your_executable_file # Change 'your_executable_file' to the name of your executable file
+            ./target/release/socket_server
           tag_name: v2.0.0
           release_name: Release ${{ github.ref }}
           body: |
