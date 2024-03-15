@@ -1,4 +1,4 @@
-# UdpSockerServer
+# UdpSocketServer
 
 This program listen on an ip for UDP message and print them. You can configure it to forward a message from an address
 to another, are blacklist a list of address.
