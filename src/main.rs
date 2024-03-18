@@ -34,7 +34,7 @@ fn listen(server_address: &str, config: &Config) {
                 let forwarding_addr = forwarding_addr_opt.unwrap();
                 socket.send_to(message.as_bytes(), forwarding_addr).expect("Error forwarding message to another ip.");
             }
-            println!("{} say: {}", src_addr.to_string(), message);
+            println!("{}: {}", src_addr.to_string(), message);
         }
     }
 }
