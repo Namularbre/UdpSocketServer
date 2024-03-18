@@ -28,13 +28,11 @@ fn listen(server_address: &str, config: &Config) {
         let (num_bytes, src_addr) = socket.recv_from(&mut buf).expect("Error while receiving message");
         if !serv_config.addr_is_blacklisted(src_addr.to_string()) {
             message.push_str(std::str::from_utf8(&buf[..num_bytes]).expect("Invalid UTF-8 data"));
-            match serv_config.is_forwarded(src_addr.to_string()) {
-                Some(v) => {
-                    socket.send_to(message.as_bytes(), v).expect("Error forwarding message to another ip.");
-                },
-                None => {
-                    //Nothing to do :)
-                }
+
+            let forwarding_addr_opt = serv_config.is_forwarded(src_addr.to_string());
+            if forwarding_addr_opt.is_some() {
+                let forwarding_addr = forwarding_addr_opt.unwrap();
+                socket.send_to(message.as_bytes(), forwarding_addr).expect("Error forwarding message to another ip.");
             }
             println!("{} say: {}", src_addr.to_string(), message);
         }
