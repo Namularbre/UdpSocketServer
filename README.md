@@ -1,7 +1,7 @@
 # UdpSocketServer
 
 This program listen on an ip for UDP message and print them. You can configure it to forward a message from an address
-to another, are blacklist a list of address.
+to another, or blacklist a list of address.
 
 ## Build
 
@@ -9,6 +9,12 @@ Use this command
 
 ````
 cargo build
+````
+
+Or for a release version
+
+````
+cargo build --release
 ````
 
 ## Run
@@ -41,7 +47,7 @@ You have a config.json file, like this:
 }
 ````
 
-The blacklist field is easy to understand: all addresses written are ignored by the server.
+The blacklist field is simple: all addresses written are ignored by the server.
 The forwarding field is a list of object indicating that if the server receive a message from the address at "from" field
 it should send it back to "to" address. The doReverse field, if set to true, will permit that when we a message from "to" address,
 it is sent to "from" address.
