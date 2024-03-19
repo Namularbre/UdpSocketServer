@@ -2,6 +2,7 @@ mod config;
 
 use std::io::stdin;
 use std::net::UdpSocket;
+use colored::Colorize;
 use crate::config::Config;
 
 fn main() {
@@ -19,7 +20,7 @@ fn get_server_address() -> String {
 
 fn listen(server_address: &str, config: &Config) {
     let serv_config = config;
-    println!("listening on {}", server_address);
+    println!("{}: {}", "listening on".green(), server_address);
     let socket: UdpSocket = UdpSocket::bind(server_address).expect("Error while binding the socket.");
 
     loop {
@@ -34,7 +35,7 @@ fn listen(server_address: &str, config: &Config) {
                 let forwarding_addr = forwarding_addr_opt.unwrap();
                 socket.send_to(message.as_bytes(), forwarding_addr).expect("Error forwarding message to another ip.");
             }
-            println!("{}: {}", src_addr.to_string(), message);
+            println!("{}: {}", src_addr.to_string().green(), message);
         }
     }
 }
