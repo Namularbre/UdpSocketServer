@@ -40,7 +40,7 @@ impl Config {
     }
 
     pub fn from_json(file_name: String) -> Config {
-        let mut file = File::open(file_name).unwrap();
+        let mut file = File::open(file_name).expect("Error opening config.json file. Go to the readme file and paste the example.");
         let mut buf = String::new();
         file.read_to_string(&mut buf).expect("Error reading config file content.");
         let json: Value = serde_json::from_str(&buf).expect("Error parsing config file");
