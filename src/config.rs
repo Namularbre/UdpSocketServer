@@ -24,13 +24,16 @@ impl Forwarding {
 
 #[derive(Deserialize)]
 pub struct Config {
+    #[serde(rename = "serverAddr")]
+    server_addr: String,
     blacklist: Vec<String>,
     forwarding: Vec<Forwarding>
 }
 
 impl Config {
-    pub fn new(blacklist: Vec<String>, forwarding: Vec<Forwarding>) -> Config {
+    pub fn new(server_addr: String,  blacklist: Vec<String>, forwarding: Vec<Forwarding>) -> Config {
         return Config {
+            server_addr,
             blacklist,
             forwarding
         }
@@ -42,6 +45,7 @@ impl Config {
         file.read_to_string(&mut buf).expect("Error reading config file content.");
         let json: Value = serde_json::from_str(&buf).expect("Error parsing config file");
         let object_data = json.as_object().unwrap();
+        let server_addr = object_data.get("serverAddr").unwrap().as_str().unwrap().to_string();
         let blacklist = object_data.get("blacklist").unwrap().as_array().unwrap();
         let forwarding = object_data.get("forwarding").unwrap().as_array().unwrap();
         let str_blacklist = Self::convert_to_vec_string(blacklist);
@@ -54,7 +58,7 @@ impl Config {
             let forwarding_struct = Forwarding::new(from.to_string(), to.to_string(), do_reverse);
             vec_forwarding.push(forwarding_struct);
         }
-        Config::new(str_blacklist, vec_forwarding)
+        Config::new(server_addr, str_blacklist, vec_forwarding)
     }
 
     fn convert_to_vec_string(vec: &Vec<Value>) -> Vec<String> {
@@ -78,5 +82,9 @@ impl Config {
             }
         }
         None
+    }
+
+    pub fn get_server_addr(&self) -> String {
+        self.server_addr.to_string()
     }
 }
