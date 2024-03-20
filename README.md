@@ -33,6 +33,7 @@ Go to release and download the .exe file, then run it. A version for linux will 
 You have a config.json file, like this: 
 ````
 {
+  "serverAddr": "127.0.0.1:12345",
   "forwarding": [
     {
       "from": "127.0.0.1:58545",
@@ -47,6 +48,7 @@ You have a config.json file, like this:
 }
 ````
 
+The serverAddr field is for the address of the server.
 The blacklist field is simple: all addresses written are ignored by the server.
 The forwarding field is a list of object indicating that if the server receive a message from the address at "from" field
 it should send it back to "to" address. The doReverse field, if set to true, will permit that when we a message from "to" address,
