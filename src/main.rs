@@ -1,7 +1,7 @@
 use crate::config::Config;
 
 mod config;
-mod vec_to_string;
+mod utils;
 mod server;
 
 fn main() {
