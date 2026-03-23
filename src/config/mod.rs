@@ -68,8 +68,8 @@ impl Config {
         buf
     }
 
-    fn parse_buffer(buf: &String) -> serde_json::Map<String, Value> {
-        let json: Value = serde_json::from_str(&buf)
+    fn parse_buffer(buf: &str) -> serde_json::Map<String, Value> {
+        let json: Value = serde_json::from_str(buf)
             .expect("Error parsing config file");
 
         let object_data = json.as_object()
