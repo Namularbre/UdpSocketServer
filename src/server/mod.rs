@@ -1,6 +1,6 @@
-use std::net::UdpSocket;
-use colored::Colorize;
 use crate::config::Config;
+use colored::Colorize;
+use std::net::UdpSocket;
 
 pub fn listen(config: &Config) {
     let serv_config = config;
@@ -37,7 +37,12 @@ pub fn listen(config: &Config) {
                     .expect("Error forwarding message to another ip.");
             }
 
-            println!("{}-{}: {}", src_addr.to_string().green(), chrono::Local::now(), message);
+            println!(
+                "{}-{}: {}",
+                src_addr.to_string().green(),
+                chrono::Local::now(),
+                message
+            );
         }
     }
 }

@@ -9,33 +9,35 @@ pub struct Forwarding {
     from: String,
     to: String,
     #[serde(rename = "doReverse")]
-    do_reverse: bool
+    do_reverse: bool,
 }
 
 impl Forwarding {
     pub fn new(from: String, to: String, do_reverse: bool) -> Forwarding {
-        Forwarding{
+        Forwarding {
             from,
             to,
-            do_reverse
+            do_reverse,
         }
     }
 
     pub fn from_json(json: &Value) -> Forwarding {
-        let object_forwarding = json.as_object()
-            .expect("Error parsing forwarding");
+        let object_forwarding = json.as_object().expect("Error parsing forwarding");
 
-        let from = object_forwarding.get("from")
+        let from = object_forwarding
+            .get("from")
             .unwrap()
             .as_str()
             .expect("Error parsing from field");
 
-        let to = object_forwarding.get("to")
+        let to = object_forwarding
+            .get("to")
             .unwrap()
             .as_str()
             .expect("Error parsing to field");
 
-        let do_reverse = object_forwarding.get("doReverse")
+        let do_reverse = object_forwarding
+            .get("doReverse")
             .unwrap()
             .as_bool()
             .expect("Error parsing doReverse field");
@@ -49,7 +51,7 @@ pub struct Config {
     #[serde(rename = "serverAddr")]
     server_addr: String,
     blacklist: Vec<String>,
-    forwarding: Vec<Forwarding>
+    forwarding: Vec<Forwarding>,
 }
 
 impl Config {
@@ -57,23 +59,23 @@ impl Config {
         Config {
             server_addr,
             blacklist,
-            forwarding
+            forwarding,
         }
     }
 
     fn read_config_file(file_name: String) -> String {
-        let mut file = File::open(file_name).expect("Error opening config.json file. Go to the readme file and paste the example.");
+        let mut file = File::open(file_name)
+            .expect("Error opening config.json file. Go to the readme file and paste the example.");
         let mut buf = String::new();
-        file.read_to_string(&mut buf).expect("Error reading config file content.");
+        file.read_to_string(&mut buf)
+            .expect("Error reading config file content.");
         buf
     }
 
     fn parse_buffer(buf: &str) -> serde_json::Map<String, Value> {
-        let json: Value = serde_json::from_str(buf)
-            .expect("Error parsing config file");
+        let json: Value = serde_json::from_str(buf).expect("Error parsing config file");
 
-        let object_data = json.as_object()
-            .expect("Error parsing config file.");
+        let object_data = json.as_object().expect("Error parsing config file.");
 
         object_data.clone()
     }
@@ -92,20 +94,18 @@ impl Config {
         let buf = Config::read_config_file(file_name);
         let object_data = Self::parse_buffer(&buf);
 
-
-        let server_addr = object_data.get("serverAddr")
+        let server_addr = object_data
+            .get("serverAddr")
             .unwrap()
             .as_str()
             .unwrap()
             .to_string();
 
-        let blacklist = object_data.get("blacklist")
-            .unwrap()
-            .as_array()
-            .unwrap();
+        let blacklist = object_data.get("blacklist").unwrap().as_array().unwrap();
         let str_blacklist = convert_to_vec_string(blacklist);
 
-        let raw_forwarding = object_data.get("forwarding")
+        let raw_forwarding = object_data
+            .get("forwarding")
             .unwrap()
             .as_array()
             .expect("Error parsing forwarding.");
@@ -121,9 +121,9 @@ impl Config {
     pub fn is_forwarded(&self, addr: String) -> Option<String> {
         for elem_forwarding in &self.forwarding {
             if elem_forwarding.from == addr {
-                return Some(elem_forwarding.to.clone())
+                return Some(elem_forwarding.to.clone());
             } else if elem_forwarding.do_reverse && elem_forwarding.to == addr {
-                return Some(elem_forwarding.from.clone())
+                return Some(elem_forwarding.from.clone());
             }
         }
         None
