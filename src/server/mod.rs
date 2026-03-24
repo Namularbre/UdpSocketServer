@@ -29,9 +29,7 @@ pub fn listen(config: &Config) {
 
             let forwarding_addr_opt = serv_config.is_forwarded(src_addr.to_string());
 
-            if forwarding_addr_opt.is_some() {
-                let forwarding_addr = forwarding_addr_opt.unwrap();
-
+            if let Some(forwarding_addr) = forwarding_addr_opt  {
                 socket
                     .send_to(message.as_bytes(), forwarding_addr)
                     .expect("Error forwarding message to another ip.");
